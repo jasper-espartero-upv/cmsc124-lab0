@@ -1,0 +1,5 @@
+{
+  "ext": ".biktor",
+  "mode": "sidecar",
+  "run_entrypoint": "./run"
+}
