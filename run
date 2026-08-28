@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 # run
 unset JAVA_HOME
-exec ./build/install/YOUR_PROJECT_NAME/bin/YOUR_PROJECT_NAME "$@"
+exec ./build/install/cmsc124-lab0/bin/cmsc124-lab0 "$@"
