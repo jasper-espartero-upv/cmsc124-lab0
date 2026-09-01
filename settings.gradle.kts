@@ -1,1 +1,1 @@
-rootProject.name = "cmsc-124-lab0"
+rootProject.name = "cmsc124-lab0"
