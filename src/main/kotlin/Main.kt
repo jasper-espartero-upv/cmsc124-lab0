@@ -1,3 +1,10 @@
 fun main(args: Array<String>) {
-    println("hello")
+    val source = "(+){-*/=!:,.<>"
+
+    val scanner = Scanner(source)
+    val tokens = scanner.scanTokens()
+
+    for (token in tokens) {
+        println(token)
+    }
 }
