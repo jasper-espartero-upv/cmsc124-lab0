@@ -18,5 +18,26 @@ enum class TokenType {
     COMMA,
     DOT,
 
+    VAR,
+    IF,
+    ELSE,
+    WHILE,
+    FOR,
+    FUNCTION,
+    RETURN,
+    TRUE,
+    FALSE,
+
+    TOWER,
+    WAVE,
+    ENEMY,
+    UPGRADE,
+    ABILITY,
+    PROJECTILE,
+    MAP,
+
+    NUMBER,
+    IDENTIFIER,
+
     EOF
 }
