@@ -115,7 +115,15 @@ class Scanner(private val source: String) {
         while (peek().isDigit()) {
             advance()
         }
-        val number = source.substring(start, current)
+        if (peek() == '.' && peekNext().isDigit()) {
+            advance()
+            while (peek().isDigit()) {
+                advance()
+            }
+        }
+
+        val value = source.substring(start, current).toDouble()
+        addToken(TokenType.NUMBER, value)
 
     }
 
