@@ -51,6 +51,8 @@ class Scanner(private val source: String) {
 
             ' ', '\r', '\t' -> { /* Discard whitespace */ }
             '\n' -> line++
+
+            else -> reportError(line, "Unexpected character: $c")
         }
     }
 
