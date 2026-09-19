@@ -4,6 +4,7 @@ class Scanner(private val source: String) {
     private var start = 0
     private var current = 0
     private var line = 1
+    private var hadError = false
 
     fun scanTokens(): List<Token> {
         while (!isAtEnd()) {
@@ -12,6 +13,11 @@ class Scanner(private val source: String) {
         }
 
         tokens.add(Token(TokenType.EOF, "", null, line))
+
+        if (hadError) {
+            kotlin.system.exitProcess(65)
+        }
+
         return tokens
     }
 
@@ -54,6 +60,11 @@ class Scanner(private val source: String) {
                 line++ // Track line numbers if strings span multiple lines
             }
             advance()
+        }
+
+        if (isAtEnd()) {
+            reportError(line, "Unterminated string.")
+            return
         }
 
         advance()
@@ -120,5 +131,10 @@ class Scanner(private val source: String) {
             "map" -> addToken(TokenType.MAP)
             else -> addToken(TokenType.IDENTIFIER)
         }
+    }
+
+    private fun reportError(line: Int, message: String) {
+        System.err.println("[line $line] Error: $message")
+        hadError = true
     }
 }
