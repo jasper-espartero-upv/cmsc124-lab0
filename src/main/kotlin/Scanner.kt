@@ -40,7 +40,25 @@ class Scanner(private val source: String) {
 
             in '0'..'9' -> number()
             in 'A'..'Z', in 'a'..'z', '_' -> identifier()
+
+            '"' -> string()
+
+            ' ', '\r', '\t' -> { /* Discard whitespace */ }
+            '\n' -> line++
         }
+    }
+
+    private fun string() {
+        while (peek() != '"' && !isAtEnd()) {
+            if (peek() == '\n') {
+                line++ // Track line numbers if strings span multiple lines
+            }
+            advance()
+        }
+
+        advance()
+        val literalValue = source.substring(start + 1, current - 1)
+        addToken(TokenType.STRING, literalValue)
     }
 
     private fun advance(): Char {
@@ -63,6 +81,11 @@ class Scanner(private val source: String) {
     private fun addToken(type: TokenType) {
         val text = source.substring(start, current)
         tokens.add(Token(type, text, null, line))
+    }
+
+    private fun addToken(type: TokenType, literal: Any?) {
+        val text = source.substring(start, current)
+        tokens.add(Token(type, text, literal, line))
     }
 
     private fun number() {
