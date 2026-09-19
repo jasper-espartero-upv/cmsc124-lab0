@@ -38,6 +38,7 @@ enum class TokenType {
 
     NUMBER,
     IDENTIFIER,
+    STRING,
 
     EOF
 }
