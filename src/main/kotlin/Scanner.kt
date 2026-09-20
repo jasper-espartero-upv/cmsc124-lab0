@@ -4,6 +4,7 @@ class Scanner(private val source: String) {
     private var start = 0
     private var current = 0
     private var line = 1
+    private var hadError = false
 
     fun scanTokens(): List<Token> {
         while (!isAtEnd()) {
@@ -12,6 +13,11 @@ class Scanner(private val source: String) {
         }
 
         tokens.add(Token(TokenType.EOF, "", null, line))
+
+        if (hadError) {
+            kotlin.system.exitProcess(65)
+        }
+
         return tokens
     }
 
@@ -27,7 +33,17 @@ class Scanner(private val source: String) {
             '+' -> addToken(TokenType.PLUS)
             '-' -> addToken(TokenType.MINUS)
             '*' -> addToken(TokenType.STAR)
-            '/' -> addToken(TokenType.SLASH)
+            '/' -> {
+                if (match('/')) {
+                    while (peek() != '\n' && !isAtEnd()) {
+                        advance()
+                    }
+                } else if (match('*')) {
+                    blockComment()
+                } else {
+                    addToken(TokenType.SLASH)
+                }
+            }
 
             '=' -> addToken(TokenType.EQUAL)
             '!' -> addToken(TokenType.BANG)
@@ -40,7 +56,32 @@ class Scanner(private val source: String) {
 
             in '0'..'9' -> number()
             in 'A'..'Z', in 'a'..'z', '_' -> identifier()
+
+            '"' -> string()
+
+            ' ', '\r', '\t' -> { /* Discard whitespace */ }
+            '\n' -> line++
+
+            else -> reportError(line, "Unexpected character: $c")
         }
+    }
+
+    private fun string() {
+        while (peek() != '"' && !isAtEnd()) {
+            if (peek() == '\n') {
+                line++ // Track line numbers if strings span multiple lines
+            }
+            advance()
+        }
+
+        if (isAtEnd()) {
+            reportError(line, "Unterminated string.")
+            return
+        }
+
+        advance()
+        val literalValue = source.substring(start + 1, current - 1)
+        addToken(TokenType.STRING, literalValue)
     }
 
     private fun advance(): Char {
@@ -65,11 +106,24 @@ class Scanner(private val source: String) {
         tokens.add(Token(type, text, null, line))
     }
 
+    private fun addToken(type: TokenType, literal: Any?) {
+        val text = source.substring(start, current)
+        tokens.add(Token(type, text, literal, line))
+    }
+
     private fun number() {
         while (peek().isDigit()) {
             advance()
         }
-        val number = source.substring(start, current)
+        if (peek() == '.' && peekNext().isDigit()) {
+            advance()
+            while (peek().isDigit()) {
+                advance()
+            }
+        }
+
+        val value = source.substring(start, current).toDouble()
+        addToken(TokenType.NUMBER, value)
 
     }
 
@@ -97,5 +151,38 @@ class Scanner(private val source: String) {
             "map" -> addToken(TokenType.MAP)
             else -> addToken(TokenType.IDENTIFIER)
         }
+    }
+
+    private fun reportError(line: Int, message: String) {
+        System.err.println("[line $line] Error: $message")
+        hadError = true
+    }
+
+    private fun blockComment() {
+        while (!(peek() == '*' && peekNext() == '/') && !isAtEnd()) {
+            if (peek() == '\n') {
+                line++
+            }
+            advance()
+        }
+
+        if (isAtEnd()) {
+            reportError(line, "Unterminated block comment.")
+            return
+        }
+
+        advance()
+        advance()
+    }
+
+    private fun match(expected: Char): Boolean {
+        if (isAtEnd() || source[current] != expected) return false
+        current++
+        return true
+    }
+
+    private fun peekNext(): Char {
+        if (current + 1 >= source.length) return '\u0000'
+        return source[current + 1]
     }
 }
