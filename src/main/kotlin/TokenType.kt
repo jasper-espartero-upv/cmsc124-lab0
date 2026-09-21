@@ -9,10 +9,10 @@ enum class TokenType {
     STAR,
     SLASH,
 
-    EQUAL,
-    BANG,
-    LESS,
-    GREATER,
+    EQUAL, EQUAL_EQUAL,
+    BANG, BANG_EQUAL,
+    LESS, LESS_EQUAL,
+    GREATER, GREATER_EQUAL,
 
     COLON,
     COMMA,
