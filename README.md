@@ -3,7 +3,7 @@
 ## Creators
 
 - Jasper S. Espartero (jasper-espartero-upv)
-- Carlo Joshua E. De Lewmos (cjdelemos)
+- Carlo Joshua E. De Lemos (cjdelemos)
 
 ## Overview
 
