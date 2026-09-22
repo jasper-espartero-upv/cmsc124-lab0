@@ -183,4 +183,4 @@ The scanner follows a conventional tokenization approach where whitespace is ign
 
 | Activity | What changed in the language                                                                                                                          |
 | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Lab 1    | Defined TDscript's lexical structure, including keywords, operators, literals, identifiers, comments, whitespace handling, and token output behavior. |
+| Lab 1    | Defined TDscript's lexical structure, including keywords, operators, literals, identifiers, comments, whitespace handling, and token output behavior. Updated lab0 test expected token output files (`*.expected`) to match the exact string format emitted by the Scanner. |
