@@ -67,8 +67,6 @@ The tokenizer exits with code `0` when scanning succeeds and `65` when a lexical
 | `>`      | comparison | binary   | left          | 5          |
 | `<=`     | comparison | binary   | left          | 5          |
 | `>=`     | comparison | binary   | left          | 5          |
-| `&&`     | logical    | binary   | left          | 6          |
-| `\|\|`   | logical    | binary   | left          | 7          |
 
 ### Literals
 
