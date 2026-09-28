@@ -1,4 +1,2 @@
 var x = 10 // single line comment
-/* multi-line
-   comment block */
 var y = 20 // comment at end of file without newline
