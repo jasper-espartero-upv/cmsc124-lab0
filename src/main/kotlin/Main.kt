@@ -41,4 +41,8 @@ fun main(args: Array<String>) {
             // Parser goes here later
         }
     }
+
+    if (scanner.hadError) {
+        kotlin.system.exitProcess(65)
+    }
 }
