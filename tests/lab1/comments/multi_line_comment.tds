@@ -1,0 +1,4 @@
+var aboveComment
+/* multi-line
+   comment block */
+var belowComment
