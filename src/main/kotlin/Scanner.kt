@@ -4,7 +4,8 @@ class Scanner(private val source: String) {
     private var start = 0
     private var current = 0
     private var line = 1
-    private var hadError = false
+    var hadError = false
+    private set
 
     fun scanTokens(): List<Token> {
         while (!isAtEnd()) {
@@ -13,11 +14,6 @@ class Scanner(private val source: String) {
         }
 
         tokens.add(Token(TokenType.EOF, "", null, line))
-
-        if (hadError) {
-            kotlin.system.exitProcess(65)
-        }
-
         return tokens
     }
 
