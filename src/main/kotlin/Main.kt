@@ -30,6 +30,7 @@ fun main(args: Array<String>) {
     val scanner = Scanner(source)
     val tokens = scanner.scanTokens()
 
+
     when (mode) {
         "default", "--tokenize" -> {
             for (token in tokens) {
@@ -38,7 +39,13 @@ fun main(args: Array<String>) {
         }
 
         "--parse" -> {
-            // Parser goes here later
+            val parser = Parser(tokens)
+            val expressions = parser.parse()
+            val printer = AstPrinter()
+
+            for (expression in expressions) {
+                println(printer.print(expression))
+            }
         }
     }
 
