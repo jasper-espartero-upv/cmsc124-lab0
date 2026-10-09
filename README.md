@@ -26,6 +26,48 @@
 | `./run --eval <file>`     | [Evaluates each expression and prints its value.] |
 | `./run`                   | [Starts the REPL.]                                |
 
+## Grammar
+
+The order of precedence is as shown, from loosest to tightest:
+
+program        -> declaration* EOF  
+
+declaration    -> varDecl  
+                | funDecl  
+                | entityDecl  
+                | statement  
+
+entityDecl     -> ( "tower" | "wave" | "enemy" | "upgrade"  
+                  | "ability" | "projectile" | "map" ) IDENTIFIER block  
+
+varDecl        -> "var" IDENTIFIER ( "=" expression )?  
+
+funDecl        -> "function" IDENTIFIER "(" parameters? ")" block  
+parameters     -> IDENTIFIER ( "," IDENTIFIER )*  
+
+statement      -> exprStmt  
+                | ifStmt  
+                | whileStmt  
+                | forStmt  
+                | returnStmt  
+                | block  
+
+exprStmt       -> expression  
+ifStmt         -> "if" "(" expression ")" statement ( "else" statement )?  
+whileStmt      -> "while" "(" expression ")" statement  
+forStmt        -> "for" "(" ( varDecl | exprStmt )? ","? expression? ","? expression? ")" statement  
+returnStmt     -> "return" expression?  
+block          -> "{" declaration* "}"  
+
+expression     -> assignment  
+assignment     -> IDENTIFIER "=" assignment | equality  
+equality       -> comparison ( ("!=" | "==") comparison )*  
+comparison     -> term ( (">" | ">=" | "<" | "<=") term )*  
+term           -> factor ( ("+" | "-") factor )*  
+factor         -> unary ( ("*" | "/") unary )*  
+unary          -> ("!" | "-") unary | primary  
+primary        -> NUMBER | STRING | IDENTIFIER | "true" | "false" | "(" expression ")"  
+
 
 Exit codes: 0 [when], 65 [when], 70 [when].
 
