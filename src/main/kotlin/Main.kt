@@ -41,8 +41,11 @@ fun main(args: Array<String>) {
         }
 
         "--parse" -> {
+
+
             for (expression in expressions) {
                 println(printer.print(expression))
+            }
         }
     }
 
