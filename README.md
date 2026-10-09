@@ -26,6 +26,18 @@
 | `./run --eval <file>`     | [Evaluates each expression and prints its value.] |
 | `./run`                   | [Starts the REPL.]                                |
 
+## Grammar
+
+The order of precedence is as shown, from loosest to tightest:
+expression -> assignment ;
+assignment -> IDENTIFIER "=" assignment | equality ;
+equality   -> comparison ( ("!=" | "==") comparison )* ;
+comparison -> term ( (">" | ">=" | "<" | "<=") term )* ;
+term       -> factor ( ("+" | "-") factor )* ;
+factor     -> unary ( ("*" | "/") unary )* ;
+unary      -> ("!" | "-") unary | primary ;
+primary    -> NUMBER | STRING | IDENTIFIER | "true" | "false" | "(" expression ")" ;
+
 
 Exit codes: 0 [when], 65 [when], 70 [when].
 
