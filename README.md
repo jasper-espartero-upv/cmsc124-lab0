@@ -101,20 +101,20 @@ Exit codes: 0 [when], 65 [when], 70 [when].
 
 ### Operators
 
-| Operator | Category   | Operands | Associativity | Precedence |
-| -------- | ---------- | -------- | ------------- | ---------- |
-| `=`      | assignment | binary   | right         | 1          |
-| `+`      | arithmetic | binary   | left          | 2          |
-| `-`      | arithmetic | binary   | left          | 2          |
-| `*`      | arithmetic | binary   | left          | 3          |
-| `/`      | arithmetic | binary   | left          | 3          |
-| `!`      | logical    | unary    | right         | 4          |
-| `==`     | comparison | binary   | left          | 5          |
-| `!=`     | comparison | binary   | left          | 5          |
-| `<`      | comparison | binary   | left          | 5          |
-| `>`      | comparison | binary   | left          | 5          |
-| `<=`     | comparison | binary   | left          | 5          |
-| `>=`     | comparison | binary   | left          | 5          |
+| Operator | Category                   | Operands | Associativity | Precedence |
+| -------- |----------------------------| -------- | ------------- | ---------- |
+| `=`      | assignment                 | binary   | right         | 1          |
+| `+`      | arithmetic / concatenation | binary   | left          | 2          |
+| `-`      | arithmetic                 | binary   | left          | 2          |
+| `*`      | arithmetic                 | binary   | left          | 3          |
+| `/`      | arithmetic                 | binary   | left          | 3          |
+| `!`      | logical                    | unary    | right         | 4          |
+| `==`     | comparison                 | binary   | left          | 5          |
+| `!=`     | comparison                 | binary   | left          | 5          |
+| `<`      | comparison                 | binary   | left          | 5          |
+| `>`      | comparison                 | binary   | left          | 5          |
+| `<=`     | comparison                 | binary   | left          | 5          |
+| `>=`     | comparison                 | binary   | left          | 5          |
 
 ### Literals
 
