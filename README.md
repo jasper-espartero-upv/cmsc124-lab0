@@ -171,6 +171,14 @@ Token(type=IDENTIFIER, lexeme=hello, literal=null, line=1)
 
 - line=1: The 1-based line number in the source file where this token was encountered.
 
+## Evaluation semantics
+
+### Runtime values
+
+TDscript represents runtime values using Kotlin's `Any?` type. Numbers are represented as `Double`, strings as `String`, booleans as `Boolean`, and the nil value as `null`.
+
+The evaluator will check operand types when performing operations to ensure that values follow TDscript's evaluation rules.
+
 ## Errors and diagnostics
 
 Lexical errors are printed using the following format:
