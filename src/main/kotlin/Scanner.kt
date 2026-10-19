@@ -138,6 +138,7 @@ class Scanner(private val source: String) {
             "return" -> addToken(TokenType.RETURN)
             "true" -> addToken(TokenType.TRUE)
             "false" -> addToken(TokenType.FALSE)
+            "null" -> addToken(TokenType.NULL)
             "tower" -> addToken(TokenType.TOWER)
             "wave" -> addToken(TokenType.WAVE)
             "enemy" -> addToken(TokenType.ENEMY)

@@ -120,6 +120,7 @@ class Parser(private val tokens: List<Token>) {
     private fun primary(): Expr {
         if (match(TokenType.FALSE)) return Expr.Literal(false)
         if (match(TokenType.TRUE)) return Expr.Literal(true)
+        if (match(TokenType.NULL)) return Expr.Literal(null)
 
 
         if (match(TokenType.NUMBER, TokenType.STRING)) {
