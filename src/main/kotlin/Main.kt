@@ -30,6 +30,9 @@ fun main(args: Array<String>) {
     val scanner = Scanner(source)
     val tokens = scanner.scanTokens()
 
+    if (scanner.hadError) {
+        kotlin.system.exitProcess(65)
+    }
 
     when (mode) {
         "default", "--tokenize" -> {
@@ -49,7 +52,5 @@ fun main(args: Array<String>) {
         }
     }
 
-    if (scanner.hadError) {
-        kotlin.system.exitProcess(65)
-    }
+    
 }

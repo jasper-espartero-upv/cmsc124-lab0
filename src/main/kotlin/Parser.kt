@@ -113,6 +113,7 @@ class Parser(private val tokens: List<Token>) {
         if (match(TokenType.FALSE)) return Expr.Literal(false)
         if (match(TokenType.TRUE)) return Expr.Literal(true)
 
+
         if (match(TokenType.NUMBER, TokenType.STRING)) {
             return Expr.Literal(previous().literal)
         }
@@ -177,7 +178,7 @@ class Parser(private val tokens: List<Token>) {
         advance()
 
         while (!isAtEnd()) {
-            // Discard tokens until reaching a boundary or start of next expression
+            if (previous().line != peek().line) return
             advance()
         }
     }
