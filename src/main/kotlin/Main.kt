@@ -30,15 +30,22 @@ fun main(args: Array<String>) {
     val scanner = Scanner(source)
     val tokens = scanner.scanTokens()
 
-
     when (mode) {
         "default", "--tokenize" -> {
             for (token in tokens) {
                 println(token)
             }
+
+            if (scanner.hadError) {
+                kotlin.system.exitProcess(65)
+            }
         }
 
         "--parse" -> {
+            if (scanner.hadError) {
+                kotlin.system.exitProcess(65)
+            }
+
             val parser = Parser(tokens)
             val expressions = parser.parse()
             val printer = AstPrinter()
@@ -49,7 +56,5 @@ fun main(args: Array<String>) {
         }
     }
 
-    if (scanner.hadError) {
-        kotlin.system.exitProcess(65)
-    }
+    
 }
