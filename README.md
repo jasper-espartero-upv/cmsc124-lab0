@@ -175,9 +175,33 @@ Token(type=IDENTIFIER, lexeme=hello, literal=null, line=1)
 
 ### Runtime values
 
-TDscript represents runtime values using Kotlin's `Any?` type. Numbers are represented as `Double`, strings as `String`, booleans as `Boolean`, and the nil value as `null`.
+TDscript represents runtime values using Kotlin's `Any?` type. Numbers are represented as `Double`, strings as `String`, booleans as `Boolean`, and the null value as `null`.
 
 The evaluator will check operand types when performing operations to ensure that values follow TDscript's evaluation rules.
+
+### Conditions
+
+Conditions in `if`, `while`, and other conditional contexts must evaluate to booleans. Other value types produce a runtime error.
+
+### Addition and string concatenation
+
+- Adding two numbers performs numeric addition.
+- If either operand is a string, both operands are converted to their string representations and concatenated.
+- If neither operand is a string, both operands must be numbers. Otherwise, evaluation produces a runtime error.
+
+### Equality
+
+Values of the same type are compared according to their value. Values of different types are unequal. Two null values compare equal.
+
+The `!=` operator returns the inverse of `==`.
+
+### Invalid operations
+
+Operations performed on unsupported operand types produce runtime errors. 
+
+### Division by Zero
+
+Performing division by zero will also result in a runtime error.
 
 ## Errors and diagnostics
 
