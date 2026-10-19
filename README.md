@@ -66,7 +66,7 @@ comparison     -> term ( (">" | ">=" | "<" | "<=") term )*
 term           -> factor ( ("+" | "-") factor )*  
 factor         -> unary ( ("*" | "/") unary )*  
 unary          -> ("!" | "-") unary | primary  
-primary        -> NUMBER | STRING | IDENTIFIER | "true" | "false" | "(" expression ")"  
+primary        -> NUMBER | STRING | IDENTIFIER | "null" | "true" | "false" | "(" expression ")"  
 
 
 Exit codes: 0 [when], 65 [when], 70 [when].
@@ -80,7 +80,7 @@ Exit codes: 0 [when], 65 [when], 70 [when].
 ### Keywords
 
 | Keyword      | Purpose                                                                  |
-| ------------ | ------------------------------------------------------------------------ |
+|--------------|--------------------------------------------------------------------------|
 | `var`        | Declares a variable.                                                     |
 | `if`         | Executes a block when a condition is true.                               |
 | `else`       | Executes a block when the preceding `if` condition is false.             |
@@ -90,6 +90,7 @@ Exit codes: 0 [when], 65 [when], 70 [when].
 | `return`     | Ends the execution of a function and optionally provides a return value. |
 | `true`       | Represents the boolean value `true`.                                     |
 | `false`      | Represents the boolean value `false`.                                    |
+| `null`       | Represents the null value.                                               |
 | `tower`      | Defines a tower.                                                         |
 | `wave`       | Defines a wave.                                                          |
 | `enemy`      | Defines an enemy.                                                        |
@@ -118,10 +119,11 @@ Exit codes: 0 [when], 65 [when], 70 [when].
 ### Literals
 
 | Kind    | Syntax            | Produces      |
-| ------- | ----------------- | ------------- |
+|---------|-------------------|---------------|
 | Number  | `42`, `3.14`      | Numeric value |
 | String  | `"Hello, World!"` | String value  |
 | Boolean | `true`, `false`   | Boolean value |
+| Null    | 'null'            | Null Value    |
 
 Numbers are scanned as `Double` values. A decimal point is treated as part of a number only when it is followed by a digit.
 
