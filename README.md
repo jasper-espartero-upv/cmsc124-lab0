@@ -210,6 +210,11 @@ Operations performed on unsupported operand types produce runtime errors.
 
 Performing division by zero will also result in a runtime error.
 
+### Logical negation
+
+The `!` operator accepts boolean operands only.
+Applying `!` to a non-boolean value produces a runtime error.
+
 ## Errors and diagnostics
 
 Lexical errors are printed using the following format:
