@@ -179,6 +179,13 @@ TDscript represents runtime values using Kotlin's `Any?` type. Numbers are repre
 
 The evaluator will check operand types when performing operations to ensure that values follow TDscript's evaluation rules.
 
+### Value printing
+
+- Numbers are printed without a trailing `.0` when the fractional part is zero; otherwise, their decimal representation is printed consistently.
+- Strings are printed without quotation marks.
+- Booleans are printed as `true` or `false`.
+- The null value is printed as `null`.
+
 ### Conditions
 
 Conditions in `if`, `while`, and other conditional contexts must evaluate to booleans. Other value types produce a runtime error.
