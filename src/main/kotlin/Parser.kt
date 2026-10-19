@@ -39,7 +39,7 @@ class Parser(private val tokens: List<Token>) {
                 return Expr.Assign(expr.name, value)
             }
 
-            error(equals, "Invalid assignment target.")
+            throw error(equals, "Invalid assignment target.")
         }
 
         return expr
@@ -62,7 +62,12 @@ class Parser(private val tokens: List<Token>) {
     private fun comparison(): Expr {
         var expr = term()
 
-        while (match(TokenType.GREATER, TokenType.GREATER_EQUAL, TokenType.LESS, TokenType.LESS_EQUAL)) {
+        while (match(
+                TokenType.GREATER,
+                TokenType.GREATER_EQUAL,
+                TokenType.LESS,
+                TokenType.LESS_EQUAL
+            )) {    
             val operator = previous()
             val right = term()
             expr = Expr.Binary(expr, operator, right)
@@ -75,7 +80,10 @@ class Parser(private val tokens: List<Token>) {
     private fun term(): Expr {
         var expr = factor()
 
-        while (match(TokenType.MINUS, TokenType.PLUS)) {
+        while (check(TokenType.MINUS) || check(TokenType.PLUS)) {
+            if (peek().line != previous().line) break
+
+            advance()
             val operator = previous()
             val right = factor()
             expr = Expr.Binary(expr, operator, right)
