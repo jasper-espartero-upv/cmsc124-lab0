@@ -158,7 +158,7 @@ class Evaluator {
     }
 
     // Converts values to the format used for printing and string concatenation.
-    private fun stringify(value: Any?): String {
+    fun stringify(value: Any?): String {
         return when (value) {
             null -> "null"
             is Boolean -> value.toString()
