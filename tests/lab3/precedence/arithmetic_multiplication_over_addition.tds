@@ -1,2 +1,2 @@
-2 + 2 * 2       // expected: 6
-5 + 5 * 5 + 5   // expected: 35
+2 + 2 * 2       // expect: 6
+5 + 5 * 5 + 5   // expect: 35

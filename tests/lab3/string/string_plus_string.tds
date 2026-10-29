@@ -1,1 +1,1 @@
-"I am a " + "string" // expected: "I am a string"
+"I am a " + "string" // expect: I am a string
