@@ -171,49 +171,56 @@ Token(type=IDENTIFIER, lexeme=hello, literal=null, line=1)
 
 - line=1: The 1-based line number in the source file where this token was encountered.
 
-## Evaluation semantics
+## Evaluation Semantics
 
-### Runtime values
+### Runtime Values
 
 TDscript represents runtime values using Kotlin's `Any?` type. Numbers are represented as `Double`, strings as `String`, booleans as `Boolean`, and the null value as `null`.
 
-The evaluator will check operand types when performing operations to ensure that values follow TDscript's evaluation rules.
+The evaluator checks operand types at runtime to ensure that operations follow TDscript's evaluation rules. Operations involving unsupported operand types produce runtime errors.
 
-### Value printing
+### Value Printing
 
-- Numbers are printed without a trailing `.0` when the fractional part is zero; otherwise, their decimal representation is printed consistently.
-- Strings are printed without quotation marks.
-- Booleans are printed as `true` or `false`.
-- The null value is printed as `null`.
+- **Numbers:** Printed without a trailing `.0` when the fractional part is zero; otherwise, printed using a consistent decimal representation.
+- **Strings:** Printed without quotation marks.
+- **Booleans:** Printed as `true` or `false`.
+- **Null:** Printed as `null`.
 
-### Conditions
+These formatting rules apply consistently to evaluated values and string conversion.
 
-Conditions in `if`, `while`, and other conditional contexts must evaluate to booleans. Other value types produce a runtime error.
+### Conditions and Truthiness
 
-### Addition and string concatenation
+TDscript uses strict boolean evaluation. Conditions in `if`, `while`, and other conditional contexts must evaluate to a boolean. Values of other types produce a runtime error.
+
+The `!` operator also accepts boolean operands only. Applying logical negation to a non-boolean value produces a runtime error.
+
+### Addition and String Concatenation
 
 - Adding two numbers performs numeric addition.
 - If either operand is a string, both operands are converted to their string representations and concatenated.
 - If neither operand is a string, both operands must be numbers. Otherwise, evaluation produces a runtime error.
 
+String conversion follows TDscript's value-printing rules.
+
 ### Equality
 
-Values of the same type are compared according to their value. Values of different types are unequal. Two null values compare equal.
+Values of the same type are compared by value. Values of different types are considered unequal, and two null values compare equal.
 
 The `!=` operator returns the inverse of `==`.
 
-### Invalid operations
+### Evaluation Order
 
-Operations performed on unsupported operand types produce runtime errors. 
+Binary expressions evaluate their left operand before their right operand. The operator is applied after both operands have been evaluated.
+
+### Invalid Operations and Runtime Errors
+
+Arithmetic and comparison operations require operands of the appropriate types. Negating a non-number, applying logical negation to a non-boolean, or performing another unsupported operation produces a runtime error.
+
+Runtime errors include a source line number and are reported to standard error. In file mode, a runtime error terminates evaluation with exit code `70`. In the REPL, the error is reported and the prompt remains available for further input.
 
 ### Division by Zero
 
-Performing division by zero will also result in a runtime error.
-
-### Logical negation
-
-The `!` operator accepts boolean operands only.
-Applying `!` to a non-boolean value produces a runtime error.
+Division by zero produces a runtime error.
 
 ## Errors and diagnostics
 
