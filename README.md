@@ -45,14 +45,16 @@ varDecl        -> "var" IDENTIFIER ( "=" expression )?
 funDecl        -> "function" IDENTIFIER "(" parameters? ")" block  
 parameters     -> IDENTIFIER ( "," IDENTIFIER )*  
 
-statement      -> exprStmt  
-                | ifStmt  
-                | whileStmt  
-                | forStmt  
-                | returnStmt  
-                | block  
+statement     -> printStmt
+                | exprStmt
+                | ifStmt
+                | whileStmt
+                | forStmt
+                | returnStmt
+                | block
 
-exprStmt       -> expression  
+printStmt     -> "print" expression NEWLINE
+exprStmt      -> expression NEWLINE 
 ifStmt         -> "if" "(" expression ")" statement ( "else" statement )?  
 whileStmt      -> "while" "(" expression ")" statement  
 forStmt        -> "for" "(" ( varDecl | exprStmt )? ","? expression? ","? expression? ")" statement  
@@ -148,7 +150,23 @@ Strings may span multiple lines. The scanner reports an error when a string reac
 ## Whitespace and termination
 
 - No; spaces, carriage returns (\r), and tabs (\t) are ignored as whitespace. Newlines (\n) increment line numbers but do not produce tokens. Newlines are ignored as tokens but are tracked for error line numbers.
-- Statement terminator: None
+- Statement terminator: Newline. Semicolons are not required to terminate statements.
+
+TDscript uses the `print` statement to evaluate an expression and display its result.
+
+Example:
+
+```text
+print 2 + 3
+print "Hello, TDscript!"
+```
+
+Output:
+
+```text
+5
+Hello, TDscript!
+```
 - Block delimiters: `{` and `}`
 - Grouping delimiters: `(` and `)`
 
