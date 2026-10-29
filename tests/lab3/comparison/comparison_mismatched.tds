@@ -1,0 +1,5 @@
+true == 1      // expect: false
+true == false  // expect: false
+true == "true" // expect: false
+true == true   // expect: true
+55 == "55"     // expect: false
