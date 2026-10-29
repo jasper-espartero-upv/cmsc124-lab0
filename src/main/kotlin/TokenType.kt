@@ -27,6 +27,7 @@ enum class TokenType {
     RETURN,
     TRUE,
     FALSE,
+    NULL,
 
     TOWER,
     WAVE,

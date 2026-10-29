@@ -66,7 +66,7 @@ comparison     -> term ( (">" | ">=" | "<" | "<=") term )*
 term           -> factor ( ("+" | "-") factor )*  
 factor         -> unary ( ("*" | "/") unary )*  
 unary          -> ("!" | "-") unary | primary  
-primary        -> NUMBER | STRING | IDENTIFIER | "true" | "false" | "(" expression ")"  
+primary        -> NUMBER | STRING | IDENTIFIER | "null" | "true" | "false" | "(" expression ")"  
 
 
 Exit codes: 0 [when], 65 [when], 70 [when].
@@ -80,7 +80,7 @@ Exit codes: 0 [when], 65 [when], 70 [when].
 ### Keywords
 
 | Keyword      | Purpose                                                                  |
-| ------------ | ------------------------------------------------------------------------ |
+|--------------|--------------------------------------------------------------------------|
 | `var`        | Declares a variable.                                                     |
 | `if`         | Executes a block when a condition is true.                               |
 | `else`       | Executes a block when the preceding `if` condition is false.             |
@@ -90,6 +90,7 @@ Exit codes: 0 [when], 65 [when], 70 [when].
 | `return`     | Ends the execution of a function and optionally provides a return value. |
 | `true`       | Represents the boolean value `true`.                                     |
 | `false`      | Represents the boolean value `false`.                                    |
+| `null`       | Represents the null value.                                               |
 | `tower`      | Defines a tower.                                                         |
 | `wave`       | Defines a wave.                                                          |
 | `enemy`      | Defines an enemy.                                                        |
@@ -100,28 +101,29 @@ Exit codes: 0 [when], 65 [when], 70 [when].
 
 ### Operators
 
-| Operator | Category   | Operands | Associativity | Precedence |
-| -------- | ---------- | -------- | ------------- | ---------- |
-| `=`      | assignment | binary   | right         | 1          |
-| `+`      | arithmetic | binary   | left          | 2          |
-| `-`      | arithmetic | binary   | left          | 2          |
-| `*`      | arithmetic | binary   | left          | 3          |
-| `/`      | arithmetic | binary   | left          | 3          |
-| `!`      | logical    | unary    | right         | 4          |
-| `==`     | comparison | binary   | left          | 5          |
-| `!=`     | comparison | binary   | left          | 5          |
-| `<`      | comparison | binary   | left          | 5          |
-| `>`      | comparison | binary   | left          | 5          |
-| `<=`     | comparison | binary   | left          | 5          |
-| `>=`     | comparison | binary   | left          | 5          |
+| Operator | Category                   | Operands | Associativity | Precedence |
+| -------- |----------------------------| -------- | ------------- | ---------- |
+| `=`      | assignment                 | binary   | right         | 1          |
+| `+`      | arithmetic / concatenation | binary   | left          | 2          |
+| `-`      | arithmetic                 | binary   | left          | 2          |
+| `*`      | arithmetic                 | binary   | left          | 3          |
+| `/`      | arithmetic                 | binary   | left          | 3          |
+| `!`      | logical                    | unary    | right         | 4          |
+| `==`     | comparison                 | binary   | left          | 5          |
+| `!=`     | comparison                 | binary   | left          | 5          |
+| `<`      | comparison                 | binary   | left          | 5          |
+| `>`      | comparison                 | binary   | left          | 5          |
+| `<=`     | comparison                 | binary   | left          | 5          |
+| `>=`     | comparison                 | binary   | left          | 5          |
 
 ### Literals
 
 | Kind    | Syntax            | Produces      |
-| ------- | ----------------- | ------------- |
+|---------|-------------------|---------------|
 | Number  | `42`, `3.14`      | Numeric value |
 | String  | `"Hello, World!"` | String value  |
 | Boolean | `true`, `false`   | Boolean value |
+| Null    | 'null'            | Null Value    |
 
 Numbers are scanned as `Double` values. A decimal point is treated as part of a number only when it is followed by a digit.
 
@@ -168,6 +170,57 @@ Token(type=IDENTIFIER, lexeme=hello, literal=null, line=1)
 - literal=null: The evaluated runtime value (used for parsed values like 10.0 or "text"; non-literals are null).
 
 - line=1: The 1-based line number in the source file where this token was encountered.
+
+## Evaluation Semantics
+
+### Runtime Values
+
+TDscript represents runtime values using Kotlin's `Any?` type. Numbers are represented as `Double`, strings as `String`, booleans as `Boolean`, and the null value as `null`.
+
+The evaluator checks operand types at runtime to ensure that operations follow TDscript's evaluation rules. Operations involving unsupported operand types produce runtime errors.
+
+### Value Printing
+
+- **Numbers:** Printed without a trailing `.0` when the fractional part is zero; otherwise, printed using a consistent decimal representation.
+- **Strings:** Printed without quotation marks.
+- **Booleans:** Printed as `true` or `false`.
+- **Null:** Printed as `null`.
+
+These formatting rules apply consistently to evaluated values and string conversion.
+
+### Conditions and Truthiness
+
+TDscript uses strict boolean evaluation. Conditions in `if`, `while`, and other conditional contexts must evaluate to a boolean. Values of other types produce a runtime error.
+
+The `!` operator also accepts boolean operands only. Applying logical negation to a non-boolean value produces a runtime error.
+
+### Addition and String Concatenation
+
+- Adding two numbers performs numeric addition.
+- If either operand is a string, both operands are converted to their string representations and concatenated.
+- If neither operand is a string, both operands must be numbers. Otherwise, evaluation produces a runtime error.
+
+String conversion follows TDscript's value-printing rules.
+
+### Equality
+
+Values of the same type are compared by value. Values of different types are considered unequal, and two null values compare equal.
+
+The `!=` operator returns the inverse of `==`.
+
+### Evaluation Order
+
+Binary expressions evaluate their left operand before their right operand. The operator is applied after both operands have been evaluated.
+
+### Invalid Operations and Runtime Errors
+
+Arithmetic and comparison operations require operands of the appropriate types. Negating a non-number, applying logical negation to a non-boolean, or performing another unsupported operation produces a runtime error.
+
+Runtime errors include a source line number and are reported to standard error. In file mode, a runtime error terminates evaluation with exit code `70`. In the REPL, the error is reported and the prompt remains available for further input.
+
+### Division by Zero
+
+Division by zero produces a runtime error.
 
 ## Errors and diagnostics
 
