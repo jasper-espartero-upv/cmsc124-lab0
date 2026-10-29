@@ -1,0 +1,6 @@
+{
+  "ext": ".tds",
+  "flag": "--eval",
+  "mode": "inline",
+  "comment_prefix": "//"
+}
