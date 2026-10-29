@@ -1,0 +1,6 @@
+24 > 25  // expect: false
+24 < 25  // expect: true
+24 == 25 // expect: false
+24 <= 25 // expect: true
+24 <= 24 // expect: true
+24 <= 23 // expect: false
