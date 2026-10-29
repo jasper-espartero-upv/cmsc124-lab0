@@ -53,8 +53,8 @@ statement     -> printStmt
                 | returnStmt
                 | block
 
-printStmt     -> "print" expression NEWLINE
-exprStmt      -> expression NEWLINE 
+printStmt     -> "print" expression NEWLINE  
+exprStmt      -> expression NEWLINE  
 ifStmt         -> "if" "(" expression ")" statement ( "else" statement )?  
 whileStmt      -> "while" "(" expression ")" statement  
 forStmt        -> "for" "(" ( varDecl | exprStmt )? ","? expression? ","? expression? ")" statement  
