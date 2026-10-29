@@ -33,6 +33,7 @@ fun main(args: Array<String>) {
     val tokens = scanner.scanTokens()
 
     when (mode) {
+        // Default mode and --tokenize print the tokens.
         "default", "--tokenize" -> {
             for (token in tokens) {
                 println(token)
@@ -43,6 +44,7 @@ fun main(args: Array<String>) {
             }
         }
 
+        // --parse prints the AST representation of each expression.
         "--parse" -> {
             if (scanner.hadError) {
                 kotlin.system.exitProcess(65)
@@ -57,6 +59,7 @@ fun main(args: Array<String>) {
             }
         }
 
+        // --eval evaluates each expression and prints its result.
         "--eval" -> {
             if (scanner.hadError) {
                 kotlin.system.exitProcess(65)
