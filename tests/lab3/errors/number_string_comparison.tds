@@ -1,0 +1,8 @@
+"five hundred cigarettes" == 500 // expect: false
+"five hundred cigarettes" != 500 // expect: true
+// These actually aren't runtime errors in our language. If the types are mismatched, equality always results in true, inequality always results in false.
+
+"5" <= 5 // expect runtime error: Operands must be numbers.
+"5" < 5  // expect runtime error: Operands must be numbers.
+"5" >= 5 // expect runtime error: Operands must be numbers.
+"5" > 5  // expect runtime error: Operands must be numbers.

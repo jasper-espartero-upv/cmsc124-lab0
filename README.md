@@ -7,7 +7,7 @@
 
 ## Overview
 
-**TDscript** is a domain-specific programming language (DSL) designed to be as readable as possible even for non-programmers, as long as they are familiar with the basic concepts of tower defense games. The terminology used in the language is based on common tower defense elements such as towers, enemies, waves, upgrades, and abilities, allowing users to configure and implement 
+**TDscript** is a domain-specific programming language (DSL) designed to be as readable as possible even for non-programmers, as long as they are familiar with the basic concepts of tower defense games. The terminology used in the language is based on common tower defense elements such as towers, enemies, waves, upgrades, and abilities, allowing users to configure and implement tower-defense game behavior using familiar concepts. 
 
 ## Host language and build
 
@@ -66,12 +66,22 @@ assignment     -> IDENTIFIER "=" assignment | equality
 equality       -> comparison ( ("!=" | "==") comparison )*  
 comparison     -> term ( (">" | ">=" | "<" | "<=") term )*  
 term           -> factor ( ("+" | "-") factor )*  
-factor         -> unary ( ("*" | "/") unary )*  
+factor         -> unary ( ("*" | "/") unary )* 
 unary          -> ("!" | "-") unary | primary  
 primary        -> NUMBER | STRING | IDENTIFIER | "null" | "true" | "false" | "(" expression ")"  
 
 
-Exit codes: 0 [when], 65 [when], 70 [when].
+Exit codes: 0 for successful execution, 65 for lexical or syntax errors, and 70 for runtime errors.
+
+## Parse Output Format
+
+The `--parse` flag prints expressions using parenthesized prefix notation.
+
+Example:
+
+```text
+(+ 1.0 (* 2.0 3.0))
+```
 
 ## File extension
 
@@ -103,20 +113,21 @@ Exit codes: 0 [when], 65 [when], 70 [when].
 
 ### Operators
 
-| Operator | Category                   | Operands | Associativity | Precedence |
-| -------- |----------------------------| -------- | ------------- | ---------- |
-| `=`      | assignment                 | binary   | right         | 1          |
-| `+`      | arithmetic / concatenation | binary   | left          | 2          |
-| `-`      | arithmetic                 | binary   | left          | 2          |
-| `*`      | arithmetic                 | binary   | left          | 3          |
-| `/`      | arithmetic                 | binary   | left          | 3          |
-| `!`      | logical                    | unary    | right         | 4          |
-| `==`     | comparison                 | binary   | left          | 5          |
-| `!=`     | comparison                 | binary   | left          | 5          |
-| `<`      | comparison                 | binary   | left          | 5          |
-| `>`      | comparison                 | binary   | left          | 5          |
-| `<=`     | comparison                 | binary   | left          | 5          |
-| `>=`     | comparison                 | binary   | left          | 5          |
+| Operator | Category | Operands | Associativity | Precedence |
+|---|---|---|---|---|
+| `=` | assignment | binary | right | 1 |
+| `==` | comparison | binary | left | 2 |
+| `!=` | comparison | binary | left | 2 |
+| `<` | comparison | binary | left | 3 |
+| `>` | comparison | binary | left | 3 |
+| `<=` | comparison | binary | left | 3 |
+| `>=` | comparison | binary | left | 3 |
+| `+` | arithmetic / concatenation | binary | left | 4 |
+| `-` | arithmetic | binary | left | 4 |
+| `*` | arithmetic | binary | left | 5 |
+| `/` | arithmetic | binary | left | 5 |
+| `!` | logical | unary | right | 6 |
+| `-` | arithmetic | unary | right | 6 |
 
 ### Literals
 
@@ -149,7 +160,8 @@ Strings may span multiple lines. The scanner reports an error when a string reac
 
 ## Whitespace and termination
 
-- No; spaces, carriage returns (\r), and tabs (\t) are ignored as whitespace. Newlines (\n) increment line numbers but do not produce tokens. Newlines are ignored as tokens but are tracked for error line numbers.
+- Spaces, carriage returns (\r), and tabs (\t) are ignored as whitespace. 
+- Newlines (\n) increment line numbers but do not produce tokens. Newlines are ignored as tokens but are tracked for error line numbers.
 - Statement terminator: Newline. Semicolons are not required to terminate statements.
 
 TDscript uses the `print` statement to evaluate an expression and display its result.
@@ -185,7 +197,7 @@ Token(type=IDENTIFIER, lexeme=hello, literal=null, line=1)
 
 - lexeme=hello: The exact slice of raw source code text read by the scanner.
 
-- literal=null: The evaluated runtime value (used for parsed values like 10.0 or "text"; non-literals are null).
+- literal=null: The literal value associated with the token, if applicable. Non-literal tokens use `null`.
 
 - line=1: The 1-based line number in the source file where this token was encountered.
 
@@ -273,12 +285,19 @@ The scanner exits with code `65` when at least one lexical error is encountered.
 | tests/lab4 | Context | inline | none |
 | tests/lab5 | Functions | inline | none |
 
-Run the Lab 1 tests locally with:
+- Lab 1 tests verify tokenization and lexical behavior.
+- Lab 2 tests verify parsing and operator precedence.
+- Lab 3 tests verify expression evaluation and runtime behavior.
+
+Run the implemented lab tests locally with:
 
 ```bash
 curl -sSL https://raw.githubusercontent.com/WhiteLicorice/cmsc-124-harness/v1.1/run_tests.py -o run_tests.py
 ./build.sh
+python3 run_tests.py tests/lab0
 python3 run_tests.py tests/lab1
+python3 run_tests.py tests/lab2
+python3 run_tests.py tests/lab3
 ```
 
 ## Design rationale
@@ -289,14 +308,16 @@ The scanner follows a conventional tokenization approach where whitespace is ign
 
 ## Known limitations
 
-* Only the lexical analysis required for Lab 1 is currently implemented.
-* Parsing and evaluation are not yet implemented.
-* Operator precedence and associativity are documented but are not yet enforced by a parser.
-* Statement termination rules are not yet defined.
-* Block comments cannot be nested.
+- Full statement execution and program evaluation are not yet implemented.
+- Variable declarations, control flow, functions, and tower-defense entities are planned for later labs.
+- The current evaluator supports expression evaluation and assignment.
+- Statement termination and full program execution are planned for Lab 4.
+- Block comments cannot be nested.
 
 ## Changelog
 
 | Activity | What changed in the language                                                                                                                          |
 | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Lab 1    | Defined TDscript's lexical structure, including keywords, operators, literals, identifiers, comments, whitespace handling, and token output behavior. Updated lab0 test expected token output files (`*.expected`) to match the exact string format emitted by the Scanner. |
+| Lab 2 | Implemented expression parsing, operator precedence, associativity, grouping, variables, and assignment expressions. |
+| Lab 3 | Implemented AST expression evaluation, runtime values, strict boolean evaluation, string concatenation, comparisons, equality, runtime errors, `--eval`, and the interactive REPL. |

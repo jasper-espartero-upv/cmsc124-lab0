@@ -1,0 +1,4 @@
+!false   // expect: true
+!true    // expect: false
+!!false  // expect: false
+!!true   // expect: true
