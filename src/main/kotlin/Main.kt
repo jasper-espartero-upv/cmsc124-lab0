@@ -20,6 +20,7 @@ fun main(args: Array<String>) {
                 continue
             }
 
+            val parser = Parser(tokens)
             val statements = parser.parse()
 
             for (statement in statements) {

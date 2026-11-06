@@ -1,5 +1,12 @@
 class AstPrinter {
 
+    fun print(statement: Stmt): String {
+        return when (statement) {
+            is Stmt.Expression -> print(statement.expression)
+            is Stmt.Print -> parenthesize("print", statement.expression)
+        }
+    }
+
     fun print(expr: Expr): String {
         return when (expr) {
 

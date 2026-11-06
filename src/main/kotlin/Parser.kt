@@ -4,12 +4,12 @@ class Parser(private val tokens: List<Token>) {
 
     private class ParseError : RuntimeException()
 
-    fun parse(): List<Expr> {
-        val expressions = mutableListOf<Expr>()
+    fun parse(): List<Stmt> {
+        val statements = mutableListOf<Stmt>()
 
         while (!isAtEnd()) {
             try {
-                expressions.add(expression())
+                statements.add(statement())
             } catch (error: ParseError) {
                 synchronize()
             }
@@ -19,7 +19,7 @@ class Parser(private val tokens: List<Token>) {
             kotlin.system.exitProcess(65)
         }
 
-        return expressions
+        return statements
     }
 
     // statement -> printStmt | exprStmt ;
