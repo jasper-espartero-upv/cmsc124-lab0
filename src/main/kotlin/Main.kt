@@ -3,7 +3,38 @@ import java.io.File
 
 fun main(args: Array<String>) {
     if (args.isEmpty()) {
-        println("Usage: ./run [--tokenize | --parse | --eval] <path>")
+        val evaluator = Evaluator()
+
+        while (true) {
+            print("> ")
+            val line = readLine() ?: break
+
+            if (line.isBlank()) {
+                continue
+            }
+
+            val scanner = Scanner(line)
+            val tokens = scanner.scanTokens()
+
+            if (scanner.hadError) {
+                continue
+            }
+
+            val parser = Parser(tokens)
+            val expressions = parser.parse()
+
+            for (expression in expressions) {
+                try {
+                    val result = evaluator.evaluate(expression)
+                    println(evaluator.stringify(result))
+                } catch (error: EvaluationError) {
+                    System.err.println(
+                        "[line ${error.line}] RuntimeError: ${error.message}"
+                    )
+                }
+            }
+        }
+
         return
     }
 
