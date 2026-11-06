@@ -20,13 +20,11 @@ fun main(args: Array<String>) {
                 continue
             }
 
-            val parser = Parser(tokens)
-            val expressions = parser.parse()
+            val statements = parser.parse()
 
-            for (expression in expressions) {
+            for (statement in statements) {
                 try {
-                    val result = evaluator.evaluate(expression)
-                    println(evaluator.stringify(result))
+                    evaluator.execute(statement)
                 } catch (error: EvaluationError) {
                     System.err.println(
                         "[line ${error.line}] RuntimeError: ${error.message}"
@@ -82,11 +80,11 @@ fun main(args: Array<String>) {
             }
 
             val parser = Parser(tokens)
-            val expressions = parser.parse()
+            val statements = parser.parse()
             val printer = AstPrinter()
 
-            for (expression in expressions) {
-                println(printer.print(expression))
+            for (statement in statements) {
+                println(printer.print(statement))
             }
         }
 
@@ -97,13 +95,12 @@ fun main(args: Array<String>) {
             }
 
             val parser = Parser(tokens)
-            val expressions = parser.parse()
+            val statements = parser.parse()
             val evaluator = Evaluator()
 
-            for (expression in expressions) {
+            for (statement in statements) {
                 try {
-                    val result = evaluator.evaluate(expression)
-                    println(evaluator.stringify(result))
+                    evaluator.execute(statement)
                 } catch (error: EvaluationError) {
                     System.err.println(
                         "[line ${error.line}] RuntimeError: ${error.message}"

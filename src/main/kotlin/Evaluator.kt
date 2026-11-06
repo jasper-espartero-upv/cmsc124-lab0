@@ -181,6 +181,19 @@ class Evaluator {
     ): Nothing {
         throw EvaluationError(token.line, message)
     }
+
+    fun execute(statement: Stmt) {
+        when (statement) {
+            is Stmt.Expression -> {
+                evaluate(statement.expression)
+            }
+
+            is Stmt.Print -> {
+                val value = evaluate(statement.expression)
+                println(stringify(value))
+            }
+        }
+    }
 }
 
 // Carries the source line and message for an evaluation error.
