@@ -56,12 +56,8 @@ class Evaluator {
             }
 
             // Reverse a boolean value.
-            TokenType.BANG -> {
-                if (right !is Boolean) {
-                    runtimeError(expr.operator, "Operand must be a boolean.")
-                }
-                !right
-            }
+            TokenType.BANG ->
+                !isTruthy(right)
 
             else -> runtimeError(expr.operator, "Unsupported unary operator.")
         }
@@ -155,6 +151,11 @@ class Evaluator {
         if (left::class != right::class) return false
 
         return left == right
+    }
+
+    // null and false are falsey; all other values are truthy.
+    private fun isTruthy(value: Any?): Boolean {
+        return value != null && value != false
     }
 
     // Converts values to the format used for printing and string concatenation.

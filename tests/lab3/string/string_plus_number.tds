@@ -1,0 +1,1 @@
+"Six seven = " + 67 // expect: Six seven = 67
