@@ -1,0 +1,2 @@
+"two" + 2 // expect: two2
+"two" - 2 // expect runtime error: Operands must be numbers.
