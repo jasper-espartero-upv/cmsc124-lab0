@@ -41,5 +41,8 @@ enum class TokenType {
     IDENTIFIER,
     STRING,
 
-    EOF
+    EOF,
+    
+    PRINT,
+    NEWLINE
 }

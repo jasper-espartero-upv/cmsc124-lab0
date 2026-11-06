@@ -56,7 +56,10 @@ class Scanner(private val source: String) {
             '"' -> string()
 
             ' ', '\r', '\t' -> { /* Discard whitespace */ }
-            '\n' -> line++
+            '\n' -> {
+                addToken(TokenType.NEWLINE)
+                line++
+            }
 
             else -> reportError(line, "Unexpected character: $c")
         }
@@ -146,6 +149,7 @@ class Scanner(private val source: String) {
             "ability" -> addToken(TokenType.ABILITY)
             "projectile" -> addToken(TokenType.PROJECTILE)
             "map" -> addToken(TokenType.MAP)
+            "print" -> addToken(TokenType.PRINT)
             else -> addToken(TokenType.IDENTIFIER)
         }
     }

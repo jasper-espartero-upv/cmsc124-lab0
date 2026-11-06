@@ -22,6 +22,29 @@ class Parser(private val tokens: List<Token>) {
         return expressions
     }
 
+    // statement -> printStmt | exprStmt ;
+    private fun statement(): Stmt {
+        if (match(TokenType.PRINT)) {
+            return printStatement()
+        }
+
+        return expressionStatement()
+    }
+
+    // printStmt -> "print" expression NEWLINE ;
+    private fun printStatement(): Stmt {
+        val value = expression()
+        consume(TokenType.NEWLINE, "Expect newline after print statement.")
+        return Stmt.Print(value)
+    }
+
+    // exprStmt -> expression NEWLINE ;
+    private fun expressionStatement(): Stmt {
+        val value = expression()
+        consume(TokenType.NEWLINE, "Expect newline after expression.")
+        return Stmt.Expression(value)
+    }
+
     // expression -> assignment ;
     private fun expression(): Expr {
         return assignment()
@@ -80,10 +103,7 @@ class Parser(private val tokens: List<Token>) {
     private fun term(): Expr {
         var expr = factor()
 
-        while (check(TokenType.MINUS) || check(TokenType.PLUS)) {
-            if (peek().line != previous().line) break
-
-            advance()
+        while (match(TokenType.MINUS, TokenType.PLUS)) {
             val operator = previous()
             val right = factor()
             expr = Expr.Binary(expr, operator, right)
@@ -184,10 +204,8 @@ class Parser(private val tokens: List<Token>) {
     }
 
     private fun synchronize() {
-        advance()
-
         while (!isAtEnd()) {
-            if (previous().line != peek().line) return
+            if (match(TokenType.NEWLINE)) return
             advance()
         }
     }
